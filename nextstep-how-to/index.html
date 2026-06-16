@@ -1,0 +1,122 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>NextStep How-To — NXT Step Navigator</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#0B103A;--blue:#1566C0;--blue-mid:#1254A4;--light-blue:#4DA3E6;--cream:#F4F7FB;--white:#fff;--text:#0B103A;--text-mid:#4A5568;--text-light:#718096;--border:#DDE3EC;--purple:#7C3AED;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}html{scroll-behavior:smooth;}body{font-family:'Inter',sans-serif;background:var(--cream);color:var(--text);line-height:1.6;}a{text-decoration:none;color:inherit;}
+.nav{background:var(--navy);height:60px;display:flex;align-items:center;padding:0 40px;position:sticky;top:0;z-index:200;gap:4px;}
+.nav-brand{display:flex;align-items:center;gap:9px;margin-right:auto;}
+.nav-logo{width:38px;height:38px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.nav-logo svg{width:24px;height:24px;}
+.nav-brand-text .top{font-size:12px;font-weight:800;color:#fff;letter-spacing:.08em;line-height:1.1;}
+.nav-brand-text .bot{font-size:7.5px;color:rgba(255,255,255,0.4);letter-spacing:.18em;text-transform:uppercase;}
+.nav-brand-text .tag{font-size:6.5px;color:rgba(255,255,255,0.3);letter-spacing:.12em;text-transform:uppercase;}
+.nl{display:flex;align-items:center;gap:1px;}
+.nl a{color:rgba(255,255,255,0.7);font-size:11.5px;font-weight:500;padding:5px 9px;border-radius:5px;transition:all .15s;white-space:nowrap;}
+.nl a:hover,.nl a.active{color:#fff;background:rgba(255,255,255,0.09);}
+.nav-cta{background:var(--blue)!important;color:#fff!important;font-weight:700!important;border-radius:6px!important;padding:7px 14px!important;margin-left:6px;}
+.nav-search{background:none;border:none;color:rgba(255,255,255,0.6);cursor:pointer;padding:6px;font-size:15px;}
+.page-hero{background:linear-gradient(105deg,var(--navy) 0%,#1a0e5e 60%,#2d1b8a 100%);padding:52px 40px;display:grid;grid-template-columns:1fr auto;align-items:center;gap:28px;overflow:hidden;position:relative;}
+.page-hero-bg{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,0.015) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.015) 1px,transparent 1px);background-size:52px 52px;}
+.hero-content{position:relative;z-index:2;max-width:600px;}
+.hero-eyebrow{font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:rgba(167,139,250,0.9);margin-bottom:10px;}
+.hero-title{font-size:clamp(26px,3.5vw,42px);font-weight:900;color:#fff;line-height:1.1;margin-bottom:6px;}
+.hero-sub{font-size:14px;font-weight:600;color:rgba(167,139,250,0.9);margin-bottom:8px;}
+.hero-desc{font-size:13px;color:rgba(255,255,255,0.58);max-width:480px;line-height:1.75;}
+.hero-img{position:relative;z-index:2;width:160px;height:160px;border-radius:12px;background:rgba(124,58,237,0.15);border:1.5px solid rgba(124,58,237,0.3);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:64px;}
+.section{padding:52px 40px;}
+.section-alt{background:#fff;}
+.s-label{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--purple);margin-bottom:6px;}
+.s-title{font-size:clamp(20px,2.5vw,28px);font-weight:800;color:var(--navy);margin-bottom:8px;line-height:1.2;}
+.s-sub{font-size:13.5px;color:var(--text-mid);max-width:560px;line-height:1.75;margin-bottom:32px;}
+.how-to-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px;}
+.ht-card{background:#fff;border:1.5px solid var(--border);border-radius:13px;padding:22px 16px;text-align:center;transition:all .2s;display:block;position:relative;overflow:hidden;}
+.ht-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--purple);transform:scaleX(0);transform-origin:left;transition:transform .2s;}
+.ht-card:hover{box-shadow:0 8px 28px rgba(11,16,58,0.12);transform:translateY(-3px);border-color:transparent;}
+.ht-card:hover::before{transform:scaleX(1);}
+.ht-icon{width:52px;height:52px;border-radius:50%;background:#EDE9FE;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;font-size:22px;}
+.ht-card h4{font-size:13.5px;font-weight:700;color:var(--navy);margin-bottom:5px;}
+.ht-card p{font-size:11.5px;color:var(--text-mid);line-height:1.55;margin-bottom:10px;}
+.ht-arrow{font-size:12px;color:var(--purple);font-weight:700;}
+.soon{background:#F5F3FF;border:1.5px dashed #C4B5FD;border-radius:13px;padding:22px 16px;text-align:center;opacity:0.7;}
+.soon-badge{display:inline-block;background:#EDE9FE;color:var(--purple);font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px;margin-bottom:8px;}
+.soon h4{font-size:13px;font-weight:600;color:var(--navy);}
+.cta-strip{background:var(--purple);padding:26px 40px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;}
+.cta-strip p{font-size:14px;font-weight:600;color:#fff;}
+.cta-strip span{font-size:12.5px;color:rgba(255,255,255,0.65);}
+.btn-w{background:#fff;color:var(--navy);font-size:13px;font-weight:700;padding:10px 20px;border-radius:7px;border:none;cursor:pointer;}
+.footer{background:var(--navy);padding:48px 40px 24px;}
+.footer-top{display:grid;grid-template-columns:auto 1fr 1fr 1fr 1fr;gap:36px;margin-bottom:30px;align-items:start;}
+.footer-logo-block{display:flex;flex-direction:column;align-items:center;gap:7px;}
+.footer-logo-circle{width:48px;height:48px;border-radius:50%;border:2px solid rgba(255,255,255,0.2);display:flex;align-items:center;justify-content:center;font-size:20px;}
+.footer-logo-name{font-size:10px;font-weight:800;color:#fff;letter-spacing:.1em;text-align:center;line-height:1.3;}
+.footer-logo-tag{font-size:7px;color:rgba(255,255,255,0.3);letter-spacing:.1em;text-transform:uppercase;text-align:center;}
+.footer-col h5{font-size:9.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-bottom:12px;}
+.footer-col a{display:block;font-size:12px;color:rgba(255,255,255,0.5);margin-bottom:8px;transition:color .15s;}
+.footer-col a:hover{color:#fff;}
+.footer-connect p{font-size:12px;color:rgba(255,255,255,0.4);margin-bottom:12px;line-height:1.6;}
+.btn-cf{background:var(--blue);color:#fff;font-size:12px;font-weight:700;padding:8px 17px;border-radius:7px;border:none;cursor:pointer;display:inline-flex;align-items:center;gap:5px;margin-bottom:13px;}
+.social-row{display:flex;gap:8px;}
+.si{width:30px;height:30px;border-radius:50%;background:rgba(255,255,255,0.08);display:flex;align-items:center;justify-content:center;font-size:13px;cursor:pointer;}
+.footer-notice{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);border-radius:9px;padding:13px 14px;display:flex;gap:9px;align-items:flex-start;}
+.fn-icon{width:25px;height:25px;border-radius:50%;background:rgba(77,163,230,0.14);display:flex;align-items:center;justify-content:center;font-size:11px;flex-shrink:0;margin-top:1px;}
+.fn-text p{font-size:10px;font-weight:700;color:rgba(255,255,255,0.52);margin-bottom:3px;}
+.fn-text span{font-size:9.5px;color:rgba(255,255,255,0.28);line-height:1.6;}
+.footer-divider{height:1px;background:rgba(255,255,255,0.07);margin:0 0 17px;}
+.footer-bottom{text-align:center;}
+.footer-bottom p{font-size:11px;color:rgba(255,255,255,0.2);}
+@media(max-width:960px){.page-hero{grid-template-columns:1fr;}.hero-img{display:none;}.footer-top{grid-template-columns:1fr 1fr 1fr;}}
+@media(max-width:640px){.nav,.section,.page-hero,.cta-strip,.footer{padding-left:20px;padding-right:20px;}.how-to-grid{grid-template-columns:1fr 1fr;}.footer-top{grid-template-columns:1fr;}}
+</style></head><body>
+
+<nav class="nav">
+  <div class="nav-brand"><div class="nav-logo"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="11" stroke="#0B103A" stroke-width="1.5"/><polygon points="12,3 14.5,9.5 21,12 14.5,14.5 12,21 9.5,14.5 3,12 9.5,9.5" fill="#1566C0"/><circle cx="12" cy="12" r="2" fill="#0B103A"/></svg></div><div class="nav-brand-text"><div class="top">NXT STEP</div><div class="bot">— NAVIGATOR —</div><div class="tag">EDUCATE · EQUIP · EMPOWER</div></div></div>
+  <div class="nl"><a href="../index.html">Home</a><a href="../counselor-compass/index.html">Counselor Compass</a><a href="../whs-counselor-compass/index.html">WHS Counselor Compass</a><a href="index.html" class="active">NextStep How-To</a><a href="../nextstep-tours/index.html">NextStep Tours</a><a href="../resource-library/index.html">Resource Library</a><a href="../about.html">About</a><a href="../whs-counselor-compass/index.html" class="nav-cta">Get Started</a><button class="nav-search">🔍</button></div>
+</nav>
+
+<section class="page-hero">
+  <div class="page-hero-bg"></div>
+  <div class="hero-content">
+    <div class="hero-eyebrow">Step-by-Step Guides for Real-World Success</div>
+    <h1 class="hero-title">NextStep How-To</h1>
+    <p class="hero-sub">Step-by-step guides for real-world success.</p>
+    <p class="hero-desc">Easy-to-follow tutorials and how-to guides to help you complete important tasks with confidence.</p>
+  </div>
+  <div class="hero-img">📋</div>
+</section>
+
+<section class="section section-alt">
+  <div class="s-label">How-To Guides</div>
+  <h2 class="s-title">Choose a Task to Get Started</h2>
+  <p class="s-sub">Step-by-step instructions for the most important tasks in high school and college planning.</p>
+  <div class="how-to-grid">
+    <a href="transcript-request.html" class="ht-card"><div class="ht-icon">📄</div><h4>Transcript Request</h4><p>How to request your official transcript.</p><div class="ht-arrow">→</div></a>
+    <a href="dual-enrollment.html" class="ht-card"><div class="ht-icon">🏛️</div><h4>Dual Enrollment</h4><p>How to get started and stay on track.</p><div class="ht-arrow">→</div></a>
+    <a href="common-app.html" class="ht-card"><div class="ht-icon">💻</div><h4>Common App</h4><p>Step-by-step guide to the Common App.</p><div class="ht-arrow">→</div></a>
+    <a href="fafsa.html" class="ht-card"><div class="ht-icon">💵</div><h4>FAFSA</h4><p>Complete your FAFSA with confidence.</p><div class="ht-arrow">→</div></a>
+    <a href="sat-act-registration.html" class="ht-card"><div class="ht-icon">✏️</div><h4>SAT / ACT Registration</h4><p>Register, prepare, and find test info.</p><div class="ht-arrow">→</div></a>
+    <a href="graduation-status.html" class="ht-card"><div class="ht-icon">🎓</div><h4>Graduation Status</h4><p>Check requirements and track progress.</p><div class="ht-arrow">→</div></a>
+    <a href="resume-building.html" class="ht-card"><div class="ht-icon">📝</div><h4>Resume Building</h4><p>Create a strong resume that stands out.</p><div class="ht-arrow">→</div></a>
+    <a href="scholarship-search.html" class="ht-card"><div class="ht-icon">🔍</div><h4>Scholarship Search</h4><p>Find and apply for scholarships.</p><div class="ht-arrow">→</div></a>
+    <a href="letter-of-recommendation.html" class="ht-card"><div class="ht-icon">✉️</div><h4>Letter of Recommendation</h4><p>How to request and manage letters.</p><div class="ht-arrow">→</div></a>
+    <div class="soon"><div class="soon-badge">Coming Soon</div><h4>And More How-To Guides</h4><p style="font-size:11.5px;color:var(--text-mid);margin-top:6px;">More how-to guides coming soon.</p></div>
+  </div>
+</section>
+
+<div class="cta-strip">
+  <div><p>Need help? We've got you covered.</p><span>Step-by-step guidance for every task.</span></div>
+  <a href="index.html" class="btn-w">View All How-To Guides →</a>
+</div>
+
+<footer class="footer">
+  <div class="footer-top">
+    <div class="footer-logo-block"><div class="footer-logo-circle">🧭</div><div class="footer-logo-name">NXT STEP<br>— NAVIGATOR —</div><div class="footer-logo-tag">EDUCATE · EQUIP · EMPOWER</div></div>
+    <div class="footer-col"><h5>Explore</h5><a href="../counselor-compass/index.html">Counselor Compass</a><a href="../whs-counselor-compass/index.html">WHS Counselor Compass</a><a href="index.html">NextStep How-To</a><a href="../nextstep-tours/index.html">NextStep Tours</a><a href="../resource-library/index.html">Resource Library</a></div>
+    <div class="footer-col"><h5>Quick Links</h5><a href="../about.html">About</a><a href="../contact.html">Contact</a><a href="../disclaimer.html">Disclaimer</a><a href="../privacy.html">Privacy Policy</a></div>
+    <div class="footer-col footer-connect"><h5>Let's Connect</h5><p>We're here to support you every step of the way.</p><a href="../contact.html" class="btn-cf">Contact Us →</a><div class="social-row"><div class="si">📘</div><div class="si">📸</div><div class="si">▶️</div><div class="si">🐦</div></div></div>
+    <div class="footer-notice"><div class="fn-icon">ℹ️</div><div class="fn-text"><p>Independent Resource Notice</p><span>NXT Step Navigator is an independent informational resource and is not affiliated with, endorsed by, or officially connected to Wellington High School or the School District.</span></div></div>
+  </div>
+  <div class="footer-divider"></div>
+  <div class="footer-bottom"><p>© 2026 NXT Step Navigator. All rights reserved.</p></div>
+</footer>
+</body></html>

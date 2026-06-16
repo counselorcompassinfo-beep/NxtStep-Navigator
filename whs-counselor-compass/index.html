@@ -1,0 +1,639 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>WHS Counselor Compass — NXT Step Navigator</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#0B103A;--blue:#1566C0;--blue-mid:#1254A4;--light-blue:#4DA3E6;--cream:#F4F7FB;--white:#fff;--text:#0B103A;--text-mid:#4A5568;--text-light:#718096;--border:#DDE3EC;--teal:#0D9488;--purple:#7C3AED;--gold:#D97706;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}html{scroll-behavior:smooth;}body{font-family:'Inter',sans-serif;background:var(--cream);color:var(--text);line-height:1.6;}a{text-decoration:none;color:inherit;}
+.nav{background:var(--navy);height:60px;display:flex;align-items:center;padding:0 40px;position:sticky;top:0;z-index:200;gap:4px;}
+.nav-brand{display:flex;align-items:center;gap:9px;margin-right:auto;}
+.nav-logo{width:38px;height:38px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.nav-logo svg{width:24px;height:24px;}
+.nav-brand-text .top{font-size:12px;font-weight:800;color:#fff;letter-spacing:.08em;line-height:1.1;}
+.nav-brand-text .bot{font-size:7.5px;color:rgba(255,255,255,0.4);letter-spacing:.18em;text-transform:uppercase;}
+.nav-brand-text .tag{font-size:6.5px;color:rgba(255,255,255,0.3);letter-spacing:.12em;text-transform:uppercase;}
+.nl a{color:rgba(255,255,255,0.7);font-size:11.5px;font-weight:500;padding:5px 9px;border-radius:5px;transition:all .15s;white-space:nowrap;}
+.nl a:hover,.nl a.active{color:#fff;background:rgba(255,255,255,0.09);}
+.nl{display:flex;align-items:center;gap:1px;}
+.nav-cta{background:var(--blue)!important;color:#fff!important;font-weight:700!important;border-radius:6px!important;padding:7px 14px!important;margin-left:6px;}
+.nav-search{background:none;border:none;color:rgba(255,255,255,0.6);cursor:pointer;padding:6px;font-size:15px;}
+/* HERO */
+.page-hero{background:linear-gradient(105deg,var(--navy) 0%,#0F1E6B 60%,#1A3A7A 100%);padding:52px 40px;display:grid;grid-template-columns:1fr auto;align-items:center;gap:28px;overflow:hidden;position:relative;}
+.page-hero-bg{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,0.015) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.015) 1px,transparent 1px);background-size:52px 52px;}
+.hero-content{position:relative;z-index:2;max-width:600px;}
+.hero-eyebrow{font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--light-blue);margin-bottom:10px;}
+.hero-title{font-size:clamp(26px,3.5vw,42px);font-weight:900;color:#fff;line-height:1.1;margin-bottom:6px;}
+.hero-sub{font-size:14px;font-weight:600;color:var(--light-blue);margin-bottom:8px;}
+.hero-desc{font-size:13px;color:rgba(255,255,255,0.58);max-width:480px;line-height:1.75;}
+.hero-img{position:relative;z-index:2;width:180px;height:180px;border-radius:12px;background:rgba(77,163,230,0.08);border:1.5px solid rgba(77,163,230,0.15);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:64px;}
+/* SECTIONS */
+.section{padding:52px 40px;}
+.section-navy{background:var(--navy);padding:52px 40px;}
+.section-alt{background:#fff;}
+.s-label{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--teal);margin-bottom:6px;}
+.s-title{font-size:clamp(20px,2.5vw,28px);font-weight:800;color:var(--navy);margin-bottom:8px;line-height:1.2;}
+.s-title-white{color:#fff;}
+.s-sub{font-size:13.5px;color:var(--text-mid);max-width:560px;line-height:1.75;margin-bottom:32px;}
+.s-sub-white{color:rgba(255,255,255,0.58);}
+/* ICON GRID */
+.icon-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:14px;}
+.icon-card{background:#fff;border:1.5px solid var(--border);border-radius:13px;padding:20px 14px;text-align:center;transition:all .2s;display:block;}
+.icon-card:hover{box-shadow:0 8px 28px rgba(11,16,58,0.12);transform:translateY(-3px);border-color:var(--teal);}
+.ic-circle{width:46px;height:46px;border-radius:50%;background:#E8EEFF;display:flex;align-items:center;justify-content:center;margin:0 auto 11px;font-size:20px;}
+.icon-card:hover .ic-circle{background:var(--teal);}
+.icon-card h4{font-size:12.5px;font-weight:700;color:var(--navy);margin-bottom:4px;}
+.icon-card p{font-size:11px;color:var(--text-mid);line-height:1.5;margin-bottom:8px;}
+.icon-card .ic-arrow{font-size:11.5px;color:var(--teal);font-weight:700;}
+/* HOUSE BLOCKS */
+.house-block{margin-bottom:48px;}
+.house-hdr{border-bottom:2px solid rgba(255,255,255,0.1);padding-bottom:12px;margin-bottom:16px;}
+.house-name{font-size:22px;font-weight:800;color:#fff;margin-bottom:4px;}
+.house-sub{font-size:15px;font-weight:600;color:rgba(255,255,255,0.72);}
+.c-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(275px,1fr));gap:11px;margin-bottom:11px;}
+.c-card{background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.11);border-radius:12px;padding:18px;display:flex;gap:12px;align-items:flex-start;min-height:158px;transition:all .2s;}
+.c-card:hover{background:rgba(255,255,255,0.11);border-color:rgba(77,163,230,0.4);}
+.c-av{width:46px;height:46px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:800;flex-shrink:0;}
+.av-blue{background:var(--light-blue);color:var(--navy);}
+.av-navy{background:rgba(255,255,255,0.15);color:#fff;}
+.av-gold{background:#F0A500;color:var(--navy);}
+.av-teal{background:#0D9488;color:#fff;}
+.av-rose{background:#9F1239;color:#fff;}
+.c-body{flex:1;min-width:0;}
+.c-name{font-size:14px;font-weight:700;color:#fff;margin-bottom:2px;}
+.c-role{font-size:11px;color:rgba(255,255,255,0.42);margin-bottom:6px;}
+.c-alpha{display:inline-block;background:rgba(77,163,230,0.18);color:var(--light-blue);font-size:10px;font-weight:700;padding:2px 9px;border-radius:20px;margin-bottom:7px;}
+.c-email a{font-size:11px;color:rgba(77,163,230,0.85);word-break:break-all;}
+.c-email a:hover{color:#fff;}
+.c-appt{display:inline-block;margin-top:8px;background:var(--blue);color:#fff;font-size:11px;font-weight:600;padding:5px 12px;border-radius:6px;transition:background .15s;}
+.c-appt:hover{background:var(--light-blue);}
+.s-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(225px,1fr));gap:8px;}
+.s-card{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:9px;padding:12px 13px;display:flex;gap:10px;align-items:flex-start;min-height:78px;transition:background .15s;}
+.s-card:hover{background:rgba(255,255,255,0.07);}
+.s-badge{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:800;flex-shrink:0;margin-top:2px;}
+.s-ap{background:rgba(240,165,0,0.18);color:#F0A500;}
+.s-dean{background:rgba(77,163,230,0.14);color:var(--light-blue);}
+.s-admin{background:rgba(255,255,255,0.07);color:rgba(255,255,255,0.5);}
+.s-title-badge{font-size:9px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:rgba(255,255,255,0.28);margin-bottom:3px;}
+.s-name{font-size:12.5px;font-weight:600;color:rgba(255,255,255,0.82);margin-bottom:2px;}
+.s-email a{font-size:10px;color:rgba(77,163,230,0.7);word-break:break-all;}
+.s-email a:hover{color:var(--light-blue);}
+.s-phone{font-size:10px;color:rgba(255,255,255,0.33);margin-top:1px;}
+/* WTT */
+.wtt-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(245px,1fr));gap:8px;}
+.wtt-card{background:#fff;border:1.5px solid var(--border);border-radius:9px;padding:11px 13px;display:flex;align-items:flex-start;gap:9px;}
+.wtt-dot{width:7px;height:7px;border-radius:50%;background:var(--teal);flex-shrink:0;margin-top:5px;}
+.wtt-role{font-size:10px;font-weight:700;color:var(--text-light);text-transform:uppercase;letter-spacing:.06em;margin-bottom:2px;}
+.wtt-name{font-size:13px;font-weight:600;color:var(--navy);margin-bottom:1px;}
+.wtt-email a{font-size:11px;color:var(--blue);}
+.wtt-email a:hover{text-decoration:underline;}
+/* DL */
+.dl-list{display:flex;flex-direction:column;gap:8px;max-width:720px;}
+.dl-row{display:flex;align-items:center;gap:13px;background:#fff;border:1.5px solid var(--border);border-radius:10px;padding:12px 14px;transition:box-shadow .15s;}
+.dl-row:hover{box-shadow:0 4px 14px rgba(11,16,58,0.08);}
+.dl-date{min-width:58px;background:var(--navy);color:#fff;border-radius:7px;padding:5px 7px;text-align:center;flex-shrink:0;}
+.dl-month{font-size:8px;text-transform:uppercase;letter-spacing:.08em;opacity:.6;}
+.dl-day{font-size:17px;font-weight:800;line-height:1;}
+.dl-body{flex:1;}
+.dl-body h4{font-size:13px;font-weight:600;color:var(--navy);margin-bottom:1px;}
+.dl-body p{font-size:11.5px;color:var(--text-mid);}
+.dl-badge{font-size:10px;font-weight:600;padding:3px 9px;border-radius:20px;flex-shrink:0;}
+.b-red{background:#FEE2E2;color:#991B1B;}.b-amber{background:#FEF3C7;color:#92400E;}.b-green{background:#DCFCE7;color:#166534;}.b-blue{background:#DBEAFE;color:#1E40AF;}
+/* QL */
+.ql-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:8px;}
+.ql-item{display:flex;align-items:center;gap:8px;padding:11px 13px;background:#fff;border:1.5px solid var(--border);border-radius:8px;font-size:12.5px;font-weight:500;color:var(--text);transition:all .15s;}
+.ql-item:hover{border-color:var(--teal);color:var(--teal);background:#F0FDF4;}
+.ql-icon{font-size:15px;flex-shrink:0;}
+/* APPT BAR */
+.appt-bar{background:linear-gradient(135deg,var(--navy),var(--blue-mid));padding:36px 40px;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;}
+.appt-bar h2{font-size:22px;font-weight:800;color:#fff;margin-bottom:5px;}
+.appt-bar p{font-size:13px;color:rgba(255,255,255,0.6);margin-bottom:8px;}
+.appt-note{display:inline-block;background:rgba(77,163,230,0.2);border:1px solid rgba(77,163,230,0.3);color:var(--light-blue);font-size:11px;font-weight:600;padding:3px 12px;border-radius:20px;}
+.btn-p{background:var(--blue);color:#fff;font-size:13px;font-weight:700;padding:10px 20px;border-radius:7px;display:inline-flex;align-items:center;gap:5px;border:none;cursor:pointer;transition:all .15s;}
+.btn-p:hover{background:var(--blue-mid);}
+.btn-g{background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.85);font-size:13px;font-weight:500;padding:10px 18px;border-radius:7px;border:1.5px solid rgba(255,255,255,0.22);cursor:pointer;transition:all .15s;}
+.btn-g:hover{background:rgba(255,255,255,0.13);}
+/* VIEW TOGGLE */
+.aud-bar{display:flex;background:#fff;border-bottom:1.5px solid var(--border);}
+.aud-tab{flex:1;padding:15px 20px;display:flex;align-items:center;justify-content:center;gap:7px;font-size:13.5px;font-weight:500;color:var(--text-light);cursor:pointer;border:none;background:none;border-bottom:3px solid transparent;transition:all .15s;}
+.aud-tab:hover{color:var(--navy);}
+.aud-tab.active{color:var(--navy);border-bottom-color:var(--teal);background:var(--cream);font-weight:600;}
+.view{display:none;}
+.view.active{display:block;}
+/* CARD GRID */
+.card-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:13px;}
+.card{background:#fff;border:1.5px solid var(--border);border-radius:13px;padding:20px 16px;transition:all .2s;display:block;position:relative;overflow:hidden;}
+.card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--card-accent,var(--teal));transform:scaleX(0);transform-origin:left;transition:transform .2s;}
+.card:hover{box-shadow:0 8px 28px rgba(11,16,58,0.12);transform:translateY(-3px);border-color:transparent;}
+.card:hover::before{transform:scaleX(1);}
+.card-icon{width:42px;height:42px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:19px;margin-bottom:11px;}
+.ci-blue{background:#DBEAFE;}.ci-teal{background:#CCFBF1;}.ci-purple{background:#EDE9FE;}.ci-gold{background:#FEF3C7;}.ci-red{background:#FEE2E2;}.ci-green{background:#DCFCE7;}.ci-navy{background:#E8EEFF;}
+.card h3{font-size:13.5px;font-weight:700;color:var(--navy);margin-bottom:5px;}
+.card p{font-size:12px;color:var(--text-mid);line-height:1.55;}
+.card-link{font-size:12px;font-weight:700;color:var(--teal);margin-top:9px;display:inline-flex;align-items:center;gap:3px;}
+/* INFO BANNER */
+.info-banner{background:#F0FDF4;border:1px solid #BBF7D0;border-radius:8px;padding:12px 15px;display:flex;gap:10px;align-items:flex-start;font-size:12px;color:#166534;line-height:1.6;margin-bottom:24px;}
+/* CTA STRIP */
+.cta-strip{background:var(--blue);padding:26px 40px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;}
+.cta-strip p{font-size:14px;font-weight:600;color:#fff;}
+.cta-strip span{font-size:12.5px;color:rgba(255,255,255,0.65);}
+.btn-w{background:#fff;color:var(--navy);font-size:13px;font-weight:700;padding:10px 20px;border-radius:7px;border:none;cursor:pointer;}
+.btn-w:hover{background:var(--cream);}
+/* FOOTER */
+.footer{background:var(--navy);padding:48px 40px 24px;}
+.footer-top{display:grid;grid-template-columns:auto 1fr 1fr 1fr 1fr;gap:36px;margin-bottom:30px;align-items:start;}
+.footer-logo-block{display:flex;flex-direction:column;align-items:center;gap:7px;}
+.footer-logo-circle{width:48px;height:48px;border-radius:50%;border:2px solid rgba(255,255,255,0.2);display:flex;align-items:center;justify-content:center;font-size:20px;}
+.footer-logo-name{font-size:10px;font-weight:800;color:#fff;letter-spacing:.1em;text-align:center;line-height:1.3;}
+.footer-logo-tag{font-size:7px;color:rgba(255,255,255,0.3);letter-spacing:.1em;text-transform:uppercase;text-align:center;}
+.footer-col h5{font-size:9.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-bottom:12px;}
+.footer-col a{display:block;font-size:12px;color:rgba(255,255,255,0.5);margin-bottom:8px;transition:color .15s;}
+.footer-col a:hover{color:#fff;}
+.footer-connect p{font-size:12px;color:rgba(255,255,255,0.4);margin-bottom:12px;line-height:1.6;}
+.btn-cf{background:var(--blue);color:#fff;font-size:12px;font-weight:700;padding:8px 17px;border-radius:7px;border:none;cursor:pointer;display:inline-flex;align-items:center;gap:5px;margin-bottom:13px;}
+.social-row{display:flex;gap:8px;}
+.si{width:30px;height:30px;border-radius:50%;background:rgba(255,255,255,0.08);display:flex;align-items:center;justify-content:center;font-size:13px;cursor:pointer;}
+.si:hover{background:rgba(255,255,255,0.15);}
+.footer-notice{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);border-radius:9px;padding:13px 14px;display:flex;gap:9px;align-items:flex-start;}
+.fn-icon{width:25px;height:25px;border-radius:50%;background:rgba(77,163,230,0.14);display:flex;align-items:center;justify-content:center;font-size:11px;flex-shrink:0;margin-top:1px;}
+.fn-text p{font-size:10px;font-weight:700;color:rgba(255,255,255,0.52);margin-bottom:3px;}
+.fn-text span{font-size:9.5px;color:rgba(255,255,255,0.28);line-height:1.6;}
+.footer-divider{height:1px;background:rgba(255,255,255,0.07);margin:0 0 17px;}
+.footer-bottom{text-align:center;}
+.footer-bottom p{font-size:11px;color:rgba(255,255,255,0.2);}
+/* CHAT */
+#chat-launcher{position:fixed;bottom:26px;right:26px;z-index:9999;width:56px;height:56px;border-radius:50%;background:var(--blue);border:none;cursor:pointer;box-shadow:0 6px 22px rgba(21,102,192,0.5);display:flex;align-items:center;justify-content:center;transition:transform .2s;animation:pulse 3s ease-in-out infinite;}
+#chat-launcher:hover{transform:scale(1.08);}
+#chat-launcher.open{animation:none;}
+@keyframes pulse{0%,100%{box-shadow:0 6px 22px rgba(21,102,192,0.5),0 0 0 0 rgba(21,102,192,0.3);}50%{box-shadow:0 6px 22px rgba(21,102,192,0.5),0 0 0 9px rgba(21,102,192,0);}}
+.c-badge{position:absolute;top:-2px;right:-2px;width:18px;height:18px;border-radius:50%;background:#EF4444;border:2px solid var(--navy);color:#fff;font-size:9px;font-weight:700;display:flex;align-items:center;justify-content:center;}
+#chat-win{position:fixed;bottom:94px;right:26px;z-index:9998;width:min(385px,calc(100vw - 32px));height:min(550px,calc(100vh - 120px));background:#fff;border-radius:16px;box-shadow:0 18px 64px rgba(11,16,58,0.22);display:flex;flex-direction:column;overflow:hidden;transform:scale(0.88) translateY(16px);transform-origin:bottom right;opacity:0;pointer-events:none;transition:transform .24s cubic-bezier(.34,1.56,.64,1),opacity .2s;}
+#chat-win.open{transform:scale(1) translateY(0);opacity:1;pointer-events:all;}
+.cw-hdr{background:linear-gradient(135deg,var(--navy),var(--blue-mid));padding:14px 15px;display:flex;align-items:center;gap:10px;flex-shrink:0;}
+.cw-av{width:38px;height:38px;border-radius:50%;background:var(--light-blue);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;position:relative;}
+.cw-dot{position:absolute;bottom:1px;right:1px;width:9px;height:9px;border-radius:50%;background:#22C55E;border:2px solid var(--navy);}
+.cw-ht{flex:1;}
+.cw-ht strong{display:block;color:#fff;font-size:13px;font-weight:600;}
+.cw-ht span{font-size:10px;color:rgba(255,255,255,0.5);}
+.cw-hbtn{background:rgba(255,255,255,0.09);border:none;border-radius:6px;width:27px;height:27px;cursor:pointer;color:rgba(255,255,255,0.62);display:flex;align-items:center;justify-content:center;font-size:13px;margin-left:3px;}
+.cw-hbtn:hover{background:rgba(255,255,255,0.16);color:#fff;}
+.cw-pills{padding:8px 12px 6px;display:flex;gap:4px;flex-wrap:wrap;border-bottom:1px solid #F1F5F9;flex-shrink:0;background:#F8FAFC;}
+.cw-pill{background:#fff;border:1px solid #E2E8F0;color:var(--navy);font-size:10.5px;font-weight:500;padding:3px 9px;border-radius:20px;cursor:pointer;white-space:nowrap;transition:all .15s;}
+.cw-pill:hover{background:var(--navy);color:#fff;}
+#cw-msgs{flex:1;overflow-y:auto;padding:12px 11px;display:flex;flex-direction:column;gap:10px;scroll-behavior:smooth;}
+#cw-msgs::-webkit-scrollbar{width:3px;}
+#cw-msgs::-webkit-scrollbar-thumb{background:#E2E8F0;border-radius:3px;}
+.msg{display:flex;gap:6px;align-items:flex-end;animation:mi .2s ease both;}
+@keyframes mi{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+.msg.user{flex-direction:row-reverse;}
+.m-av{width:24px;height:24px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:11px;}
+.b-av{background:var(--light-blue);}
+.u-av{background:var(--navy);color:#fff;font-size:9px;font-weight:700;}
+.m-bub{max-width:84%;padding:8px 11px;border-radius:12px;font-size:12.5px;line-height:1.55;}
+.msg.bot .m-bub{background:#F1F5F9;color:#0B103A;border-bottom-left-radius:3px;}
+.msg.user .m-bub{background:var(--navy);color:#fff;border-bottom-right-radius:3px;}
+.m-bub strong{font-weight:600;}
+.m-bub ul{padding-left:13px;margin-top:3px;}
+.m-bub li{margin-bottom:2px;}
+.m-time{font-size:9px;color:#94A3B8;margin-top:2px;}
+.tdots{display:flex;gap:3px;padding:9px 11px;background:#F1F5F9;border-radius:12px;border-bottom-left-radius:3px;}
+.tdot{width:6px;height:6px;background:#94A3B8;border-radius:50%;animation:db 1.2s ease-in-out infinite;}
+.tdot:nth-child(2){animation-delay:.2s;}.tdot:nth-child(3){animation-delay:.4s;}
+@keyframes db{0%,60%,100%{transform:translateY(0);}30%{transform:translateY(-5px);}}
+.cw-inp-row{padding:9px 11px;border-top:1px solid #F1F5F9;display:flex;gap:6px;align-items:flex-end;flex-shrink:0;background:#fff;}
+#cw-inp{flex:1;border:1.5px solid #E2E8F0;border-radius:9px;padding:8px 11px;font-size:12.5px;font-family:'Inter',sans-serif;resize:none;outline:none;max-height:84px;line-height:1.5;color:#0B103A;background:#F8FAFC;transition:border-color .15s;}
+#cw-inp:focus{border-color:var(--blue);background:#fff;}
+#cw-inp::placeholder{color:#94A3B8;}
+#cw-snd{width:35px;height:35px;border-radius:8px;background:var(--navy);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background .15s;}
+#cw-snd:hover{background:var(--blue);}
+#cw-snd:disabled{background:#CBD5E1;cursor:not-allowed;}
+#cw-snd svg{width:14px;height:14px;fill:#fff;}
+.cw-ft{padding:4px 11px 6px;text-align:center;font-size:9px;color:#94A3B8;border-top:1px solid #F1F5F9;flex-shrink:0;}
+.qrcs{display:flex;gap:5px;flex-wrap:wrap;margin-top:7px;}
+.qrc{background:#fff;border:1.5px solid var(--navy);color:var(--navy);font-size:11px;font-weight:500;padding:3px 10px;border-radius:20px;cursor:pointer;transition:all .15s;}
+.qrc:hover{background:var(--navy);color:#fff;}
+@media(max-width:960px){.page-hero{grid-template-columns:1fr;}.hero-img{display:none;}.footer-top{grid-template-columns:1fr 1fr 1fr;}}
+@media(max-width:640px){.nav,.section,.section-navy,.page-hero,.appt-bar,.cta-strip,.footer{padding-left:20px;padding-right:20px;}.icon-grid,.card-grid,.c-grid,.s-grid,.wtt-grid,.ql-grid{grid-template-columns:1fr 1fr;}.footer-top{grid-template-columns:1fr;}}
+</style></head><body>
+
+<nav class="nav">
+  <div class="nav-brand">
+    <div class="nav-logo"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="11" stroke="#0B103A" stroke-width="1.5"/><polygon points="12,3 14.5,9.5 21,12 14.5,14.5 12,21 9.5,14.5 3,12 9.5,9.5" fill="#1566C0"/><circle cx="12" cy="12" r="2" fill="#0B103A"/></svg></div>
+    <div class="nav-brand-text"><div class="top">NXT STEP</div><div class="bot">— NAVIGATOR —</div><div class="tag">EDUCATE · EQUIP · EMPOWER</div></div>
+  </div>
+  <div class="nl">
+    <a href="../index.html">Home</a>
+    <a href="../counselor-compass/index.html">Counselor Compass</a>
+    <a href="index.html" class="active">WHS Counselor Compass</a>
+    <a href="../nextstep-how-to/index.html">NextStep How-To</a>
+    <a href="../nextstep-tours/index.html">NextStep Tours</a>
+    <a href="../resource-library/index.html">Resource Library</a>
+    <a href="../about.html">About</a>
+    <a href="index.html" class="nav-cta">Get Started</a>
+    <button class="nav-search">🔍</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="page-hero">
+  <div class="page-hero-bg"></div>
+  <div class="hero-content">
+    <div class="hero-eyebrow">A Wellington-Specific NXT Step Navigator Resource</div>
+    <h1 class="hero-title">WHS Counselor Compass</h1>
+    <p class="hero-sub">A Wellington-Specific NXT Step Navigator Resource</p>
+    <p class="hero-desc">School-specific information to help you plan, prepare, and succeed at Wellington High School.</p>
+  </div>
+  <div class="hero-img">🏫</div>
+</section>
+
+<!-- DISCLAIMER -->
+<div style="background:#EFF6FF;border-bottom:1px solid #BFDBFE;padding:14px 40px;display:flex;gap:10px;align-items:flex-start;">
+  <span style="font-size:14px;flex-shrink:0;margin-top:2px;">ℹ️</span>
+  <p style="font-size:12px;color:#1E40AF;line-height:1.6;">NXT Step Navigator is an independent informational resource and is not affiliated with, endorsed by, or officially connected to Wellington High School or the School District. Always verify information with official school sources.</p>
+</div>
+
+<!-- AUDIENCE TOGGLE -->
+<div class="aud-bar">
+  <button class="aud-tab active" id="tab-student" onclick="switchView('student')">🎒 For Students</button>
+  <button class="aud-tab" id="tab-parent" onclick="switchView('parent')">👨‍👩‍👧 For Parents &amp; Guardians</button>
+</div>
+
+<!-- STUDENT VIEW -->
+<div id="student-view" class="view active">
+
+  <!-- WHS START HERE -->
+  <section class="section section-alt">
+    <div class="s-label">Wellington High School — Start Here</div>
+    <h2 class="s-title">WHS Resources at a Glance</h2>
+    <p class="s-sub">Everything specific to Wellington Community High School — counselors, contacts, dates, courses, and more.</p>
+    <div class="icon-grid" style="grid-template-columns:repeat(auto-fill,minmax(155px,1fr));">
+      <a href="whs-start-here.html" class="icon-card"><div class="ic-circle">🚀</div><h4>WHS Start Here</h4><p>Begin with important information for WHS students &amp; families.</p><div class="ic-arrow">→</div></a>
+      <a href="whs-who-to-contact.html" class="icon-card"><div class="ic-circle">📞</div><h4>WHS Who to Contact</h4><p>Find counselors and key staff contacts.</p><div class="ic-arrow">→</div></a>
+      <a href="whs-counselor-assignments.html" class="icon-card"><div class="ic-circle">🧭</div><h4>WHS Counselor Assignments</h4><p>Find your counselor and grade team.</p><div class="ic-arrow">→</div></a>
+      <a href="whs-course-selection.html" class="icon-card"><div class="ic-circle">📚</div><h4>WHS Course Selection</h4><p>Explore courses and plan your schedule.</p><div class="ic-arrow">→</div></a>
+      <a href="whs-graduation-information.html" class="icon-card"><div class="ic-circle">🎓</div><h4>WHS Graduation Information</h4><p>Requirements, credits, and important deadlines.</p><div class="ic-arrow">→</div></a>
+      <a href="whs-testing-information.html" class="icon-card"><div class="ic-circle">✏️</div><h4>WHS Testing Information</h4><p>SAT, ACT, AP, and state testing details.</p><div class="ic-arrow">→</div></a>
+      <a href="whs-college-career.html" class="icon-card"><div class="ic-circle">💼</div><h4>WHS College &amp; Career</h4><p>Resources for college and career planning.</p><div class="ic-arrow">→</div></a>
+      <a href="whs-dual-enrollment-early-admission.html" class="icon-card"><div class="ic-circle">🏛️</div><h4>WHS Dual Enrollment / Early Admission</h4><p>Earn college credit and get a head start.</p><div class="ic-arrow">→</div></a>
+      <a href="whs-important-dates.html" class="icon-card"><div class="ic-circle">📅</div><h4>WHS Important Dates</h4><p>Key dates and deadlines to know.</p><div class="ic-arrow">→</div></a>
+      <a href="whs-forms-links.html" class="icon-card"><div class="ic-circle">📋</div><h4>WHS Forms &amp; Links</h4><p>Quick access to important forms and helpful links.</p><div class="ic-arrow">→</div></a>
+    </div>
+  </section>
+
+  <!-- COUNSELORS SECTION -->
+  <section class="section-navy">
+    <div style="font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#F0A500;margin-bottom:6px;">Meet Your Team</div>
+    <h2 style="font-size:clamp(20px,2.5vw,28px);font-weight:800;color:#fff;margin-bottom:8px;">WHS School Counselors</h2>
+    <p style="font-size:13px;color:rgba(255,255,255,0.55);max-width:560px;line-height:1.75;margin-bottom:32px;">Counselors are assigned by student last name and grade. Find your counselor below and book your appointment!</p>
+
+    <!-- 9TH GRADE -->
+    <div class="house-block">
+      <div class="house-hdr">
+        <div class="house-name">🔵 9th Grade Team</div>
+        <div class="house-sub">All 9th Grade Students</div>
+      </div>
+      <div class="c-grid">
+        <div class="c-card">
+          <div class="c-av av-gold">TG</div>
+          <div class="c-body">
+            <div class="c-name">Mr. Travis Gray</div>
+            <div class="c-role">School Counselor · 9th Grade</div>
+            <div class="c-alpha">Last Names A – L</div>
+            <div class="c-email"><a href="mailto:travis.gray@palmbeachschools.org">travis.gray@palmbeachschools.org</a></div>
+            <a href="https://calendly.com/travis-gray-13/30min" target="_blank" class="c-appt">📅 Book Appointment</a>
+          </div>
+        </div>
+        <div class="c-card">
+          <div class="c-av av-navy">AS</div>
+          <div class="c-body">
+            <div class="c-name">Mr. Andrew Saperstein</div>
+            <div class="c-role">School Counselor · 9th Grade</div>
+            <div class="c-alpha">Last Names M – Z</div>
+            <div class="c-email"><a href="mailto:andrew.saperstein@palmbeachschools.org">andrew.saperstein@palmbeachschools.org</a></div>
+            <a href="https://calendly.com/andrew-saperstein/15min" target="_blank" class="c-appt">📅 Book Appointment</a>
+          </div>
+        </div>
+      </div>
+      <div class="s-grid">
+        <div class="s-card"><div class="s-badge s-ap">AP</div><div><div class="s-title-badge">Assistant Principal</div><div class="s-name">Mr. Michael Kozlowski</div><div class="s-email"><a href="mailto:mike.kozlowski@palmbeachschools.org">mike.kozlowski@palmbeachschools.org</a></div></div></div>
+        <div class="s-card"><div class="s-badge s-dean">D</div><div><div class="s-title-badge">Dean</div><div class="s-name">Mrs. Catalina Toledo</div><div class="s-email"><a href="mailto:catalina.toledo@palmbeachschools.org">catalina.toledo@palmbeachschools.org</a></div></div></div>
+        <div class="s-card"><div class="s-badge s-dean">AD</div><div><div class="s-title-badge">Associate Dean · 9th Grade</div><div class="s-name">Mr. Brockton Boretti</div><div class="s-email"><a href="mailto:brockton.boretti@palmbeachschools.org">brockton.boretti@palmbeachschools.org</a></div></div></div>
+        <div class="s-card"><div class="s-badge s-dean">AD</div><div><div class="s-title-badge">Associate Dean · 9th Grade</div><div class="s-name">Mr. Mark Dubois</div><div class="s-email"><a href="mailto:mark.dubois@palmbeachschools.org">mark.dubois@palmbeachschools.org</a></div></div></div>
+        <div class="s-card"><div class="s-badge s-admin">AA</div><div><div class="s-title-badge">Administrative Assistant</div><div class="s-name">Ms. Janet Leon</div><div class="s-email"><a href="mailto:janet.leon@palmbeachschools.org">janet.leon@palmbeachschools.org</a></div><div class="s-phone">561-795-4933</div></div></div>
+      </div>
+    </div>
+
+    <!-- BIG BLUE -->
+    <div class="house-block">
+      <div class="house-hdr">
+        <div class="house-name">🟡 Big Blue</div>
+        <div class="house-sub">Grades 10–12 · Last Names A – G</div>
+      </div>
+      <div class="c-grid">
+        <div class="c-card">
+          <div class="c-av av-blue">JS</div>
+          <div class="c-body">
+            <div class="c-name">Mrs. Julia Saye</div>
+            <div class="c-role">School Counselor · Grades 10–12</div>
+            <div class="c-alpha">Last Names A – C</div>
+            <div class="c-email"><a href="mailto:julia.saye@palmbeachschools.org">julia.saye@palmbeachschools.org</a></div>
+          </div>
+        </div>
+        <div class="c-card">
+          <div class="c-av av-gold">RL</div>
+          <div class="c-body">
+            <div class="c-name">Dr. Rosemyrtle Louis</div>
+            <div class="c-role">School Counselor · Grades 10–12</div>
+            <div class="c-alpha">Last Names D – G</div>
+            <div class="c-email"><a href="mailto:Rosemyrtle.louis@palmbeachschools.org">Rosemyrtle.louis@palmbeachschools.org</a></div>
+          </div>
+        </div>
+      </div>
+      <div class="s-grid">
+        <div class="s-card"><div class="s-badge s-ap">AP</div><div><div class="s-title-badge">Assistant Principal</div><div class="s-name">Dr. Eric Moore</div><div class="s-email"><a href="mailto:eric.moore@palmbeachschools.org">eric.moore@palmbeachschools.org</a></div></div></div>
+        <div class="s-card"><div class="s-badge s-dean">D</div><div><div class="s-title-badge">Dean</div><div class="s-name">Mr. Lee Tanton</div><div class="s-email"><a href="mailto:lee.tanton@palmbeachschools.org">lee.tanton@palmbeachschools.org</a></div></div></div>
+        <div class="s-card"><div class="s-badge s-admin">AA</div><div><div class="s-title-badge">Administrative Assistant</div><div class="s-name">Ms. Kimberly Ellis</div><div class="s-email"><a href="mailto:kimberly.ellis@palmbeachschools.org">kimberly.ellis@palmbeachschools.org</a></div><div class="s-phone">561-791-9323</div></div></div>
+      </div>
+    </div>
+
+    <!-- GREENVIEW -->
+    <div class="house-block">
+      <div class="house-hdr">
+        <div class="house-name">🟢 Greenview</div>
+        <div class="house-sub">Grades 10–12 · Last Names H – M</div>
+      </div>
+      <div class="c-grid">
+        <div class="c-card">
+          <div class="c-av av-teal">DF</div>
+          <div class="c-body">
+            <div class="c-name">Mrs. Danielle Fairclough ⭐</div>
+            <div class="c-role">Counseling Director · Grades 10–12</div>
+            <div class="c-alpha">Last Names H – J</div>
+            <div class="c-email"><a href="mailto:danielle.fairclough@palmbeachschools.org">danielle.fairclough@palmbeachschools.org</a></div>
+            <a href="https://calendly.com/danielle-fairclough/appointment" target="_blank" class="c-appt">📅 Book Appointment</a>
+          </div>
+        </div>
+        <div class="c-card">
+          <div class="c-av av-navy">LM</div>
+          <div class="c-body">
+            <div class="c-name">Mrs. Laquania Morgan</div>
+            <div class="c-role">School Counselor · Grades 10–12</div>
+            <div class="c-alpha">Last Names K – M</div>
+            <div class="c-email"><a href="mailto:laquania.morgan@palmbeachschools.org">laquania.morgan@palmbeachschools.org</a></div>
+          </div>
+        </div>
+      </div>
+      <div class="s-grid">
+        <div class="s-card"><div class="s-badge s-ap">AP</div><div><div class="s-title-badge">Assistant Principal</div><div class="s-name">Dr. Elizabeth Calvente-Torres</div><div class="s-email"><a href="mailto:elizabeth.calvente-torres@palmbeachschools.org">elizabeth.calvente-torres@palmbeachschools.org</a></div></div></div>
+        <div class="s-card"><div class="s-badge s-ap">AP</div><div><div class="s-title-badge">Assistant Principal</div><div class="s-name">Ms. Magda Dominique</div><div class="s-email"><a href="mailto:magda.dominique@palmbeachschools.org">magda.dominique@palmbeachschools.org</a></div></div></div>
+        <div class="s-card"><div class="s-badge s-admin">AA</div><div><div class="s-title-badge">Administrative Assistant</div><div class="s-name">Ms. Yvette Thomas</div><div class="s-email"><a href="mailto:yvette.thomas@palmbeachschools.org">yvette.thomas@palmbeachschools.org</a></div><div class="s-phone">561-795-4920</div></div></div>
+      </div>
+    </div>
+
+    <!-- SOUTHSHORE -->
+    <div class="house-block">
+      <div class="house-hdr">
+        <div class="house-name">🔴 Southshore</div>
+        <div class="house-sub">Grades 10–12 · Last Names N – Z</div>
+      </div>
+      <div class="c-grid">
+        <div class="c-card">
+          <div class="c-av av-gold">TM</div>
+          <div class="c-body">
+            <div class="c-name">Mr. Timothy Mickens</div>
+            <div class="c-role">School Counselor · Grades 10–12</div>
+            <div class="c-alpha">Last Names N – R</div>
+            <div class="c-email"><a href="mailto:timothy.mickens@palmbeachschools.org">timothy.mickens@palmbeachschools.org</a></div>
+          </div>
+        </div>
+        <div class="c-card">
+          <div class="c-av av-navy">TR</div>
+          <div class="c-body">
+            <div class="c-name">Mrs. Terry Roberto</div>
+            <div class="c-role">School Counselor · Grades 10–12</div>
+            <div class="c-alpha">Last Names S – Z</div>
+            <div class="c-email"><a href="mailto:terry.roberto@palmbeachschools.org">terry.roberto@palmbeachschools.org</a></div>
+            <a href="https://calendly.com/terry-roberto/" target="_blank" class="c-appt">📅 Book Appointment</a>
+          </div>
+        </div>
+      </div>
+      <div class="s-grid">
+        <div class="s-card"><div class="s-badge s-ap">AP</div><div><div class="s-title-badge">Assistant Principal</div><div class="s-name">Mrs. Tonya Grant</div><div class="s-email"><a href="mailto:tonya.grant@palmbeachschools.org">tonya.grant@palmbeachschools.org</a></div></div></div>
+        <div class="s-card"><div class="s-badge s-dean">D</div><div><div class="s-title-badge">Dean</div><div class="s-name">Ms. Malissa McAuley</div><div class="s-email"><a href="mailto:malissa.mcauley@palmbeachschools.org">malissa.mcauley@palmbeachschools.org</a></div></div></div>
+        <div class="s-card"><div class="s-badge s-admin">AA</div><div><div class="s-title-badge">Administrative Assistant</div><div class="s-name">Ms. Dalia Khalil</div><div class="s-email"><a href="mailto:dalia.khalil@palmbeachschools.org">dalia.khalil@palmbeachschools.org</a></div><div class="s-phone">561-795-4915</div></div></div>
+      </div>
+    </div>
+
+    <!-- ESOL -->
+    <div class="house-block">
+      <div class="house-hdr">
+        <div class="house-name">🌎 ESOL Support</div>
+        <div class="house-sub">English for Speakers of Other Languages · All Grades</div>
+      </div>
+      <div class="c-grid">
+        <div class="c-card">
+          <div class="c-av av-blue">CG</div>
+          <div class="c-body">
+            <div class="c-name">Mrs. Claudia Gallardo</div>
+            <div class="c-role">ESOL Counselor · All Grades</div>
+            <div class="c-email"><a href="mailto:Claudia.Gallardo@palmbeachschools.org">Claudia.Gallardo@palmbeachschools.org</a></div>
+          </div>
+        </div>
+      </div>
+      <div class="s-grid">
+        <div class="s-card"><div class="s-badge s-admin">EC</div><div><div class="s-title-badge">ESOL Coordinator</div><div class="s-name">Mr. Christian Carrera</div><div class="s-email"><a href="mailto:Christian.Carrera@palmbeachschools.org">Christian.Carrera@palmbeachschools.org</a></div></div></div>
+      </div>
+    </div>
+
+    <!-- WELLNESS -->
+    <div class="house-block">
+      <div class="house-hdr">
+        <div class="house-name">💙 Wolverine Wellness Center</div>
+        <div class="house-sub">Mental Health &amp; Behavioral Support · All Grades</div>
+      </div>
+      <div class="c-grid">
+        <div class="c-card">
+          <div class="c-av av-teal">AJ</div>
+          <div class="c-body">
+            <div class="c-name">Ms. Allyson Joseph</div>
+            <div class="c-role">Student Wellness Center Coordinator · Behavioral Health Professional (BHP)</div>
+            <div class="c-alpha">Mental Health Coordinator · Grades 9–10</div>
+            <div class="c-email"><a href="mailto:allyson.joseph@palmbeachschools.org">allyson.joseph@palmbeachschools.org</a></div>
+          </div>
+        </div>
+        <div class="c-card">
+          <div class="c-av av-rose">CR</div>
+          <div class="c-body">
+            <div class="c-name">Ms. Christina Ranieri</div>
+            <div class="c-role">D.A.T.A. Counselor &amp; Licensed Mental Health Counselor (LMHC)</div>
+            <div class="c-email"><a href="mailto:Christina.Ranieri@palmbeachschools.org">Christina.Ranieri@palmbeachschools.org</a></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- WHO TO TURN TO -->
+  <section class="section section-alt">
+    <div class="s-label">School Directory</div>
+    <h2 class="s-title">Who To Turn To at WHS</h2>
+    <p class="s-sub">Need something specific? Here's who to contact at Wellington Community High School.</p>
+    <div class="wtt-grid">
+      <div class="wtt-card"><div class="wtt-dot"></div><div><div class="wtt-role">Principal</div><div class="wtt-name">Mrs. Cara A. Gorham</div><div class="wtt-email"><a href="mailto:Cara.Gorham@palmbeachschools.org">Cara.Gorham@palmbeachschools.org</a></div></div></div>
+      <div class="wtt-card"><div class="wtt-dot"></div><div><div class="wtt-role">Admin Assistant to Principal</div><div class="wtt-name">Mrs. Marisol Ramos</div><div class="wtt-email"><a href="mailto:Marisol.Ramos@palmbeachschools.org">Marisol.Ramos@palmbeachschools.org</a></div></div></div>
+      <div class="wtt-card"><div class="wtt-dot"></div><div><div class="wtt-role">Counseling Director</div><div class="wtt-name">Mrs. Danielle Fairclough</div><div class="wtt-email"><a href="mailto:Danielle.Fairclough@palmbeachschools.org">Danielle.Fairclough@palmbeachschools.org</a></div></div></div>
+      <div class="wtt-card"><div class="wtt-dot"></div><div><div class="wtt-role">Records &amp; Transcripts</div><div class="wtt-name">Ms. Lori Gelobter</div><div class="wtt-email"><a href="mailto:Lori.Gelobter@palmbeachschools.org">Lori.Gelobter@palmbeachschools.org</a></div></div></div>
+      <div class="wtt-card"><div class="wtt-dot"></div><div><div class="wtt-role">AP Coordinator</div><div class="wtt-name">Mr. Lee Tanton</div><div class="wtt-email"><a href="mailto:Lee.Tanton@palmbeachschools.org">Lee.Tanton@palmbeachschools.org</a></div></div></div>
+      <div class="wtt-card"><div class="wtt-dot"></div><div><div class="wtt-role">AICE Coordinator</div><div class="wtt-name">Ms. Mierka Drucker</div><div class="wtt-email"><a href="mailto:Mierka.Drucker@palmbeachschools.org">Mierka.Drucker@palmbeachschools.org</a></div></div></div>
+      <div class="wtt-card"><div class="wtt-dot"></div><div><div class="wtt-role">Assessment Coordinator</div><div class="wtt-name">Mrs. Kathleen Pereira</div><div class="wtt-email"><a href="mailto:Kathleen.Pereira@palmbeachschools.org">Kathleen.Pereira@palmbeachschools.org</a></div></div></div>
+      <div class="wtt-card"><div class="wtt-dot"></div><div><div class="wtt-role">Academy Coordinator</div><div class="wtt-name">Ms. Vanessa Douglass</div><div class="wtt-email"><a href="mailto:Vanessa.Douglass@palmbeachschools.org">Vanessa.Douglass@palmbeachschools.org</a></div></div></div>
+      <div class="wtt-card"><div class="wtt-dot"></div><div><div class="wtt-role">ESE Coordinators</div><div class="wtt-name">Ms. Michelle Eichner / Ms. Debra Wilson</div><div class="wtt-email"><a href="mailto:Michelle.Eichner@palmbeachschools.org">Michelle.Eichner@palmbeachschools.org</a></div></div></div>
+      <div class="wtt-card"><div class="wtt-dot"></div><div><div class="wtt-role">Athletic Director</div><div class="wtt-name">Mr. Robert Callovi</div><div class="wtt-email"><a href="mailto:Robert.Callovi@palmbeachschools.org">Robert.Callovi@palmbeachschools.org</a></div></div></div>
+      <div class="wtt-card"><div class="wtt-dot"></div><div><div class="wtt-role">Activities Director</div><div class="wtt-name">Ms. Gemma Ford</div><div class="wtt-email"><a href="mailto:Gemma.Ford@palmbeachschools.org">Gemma.Ford@palmbeachschools.org</a></div></div></div>
+      <div class="wtt-card"><div class="wtt-dot"></div><div><div class="wtt-role">Clinic / Nurse</div><div class="wtt-name">Mrs. Safina Bansee, RN</div><div class="wtt-email"><a href="mailto:Sbansee@hcdpc.org">Sbansee@hcdpc.org</a></div></div></div>
+      <div class="wtt-card"><div class="wtt-dot"></div><div><div class="wtt-role">Media Specialist</div><div class="wtt-name">Dr. Sara Curry</div><div class="wtt-email"><a href="mailto:Sara.Curry@palmbeachschools.org">Sara.Curry@palmbeachschools.org</a></div></div></div>
+      <div class="wtt-card"><div class="wtt-dot"></div><div><div class="wtt-role">PTSA</div><div class="wtt-name">Ms. Jennifer Abreu</div><div class="wtt-email"><a href="mailto:Jenniferabreu311@gmail.com">Jenniferabreu311@gmail.com</a></div></div></div>
+      <div class="wtt-card"><div class="wtt-dot"></div><div><div class="wtt-role">SAC Chair</div><div class="wtt-name">Mrs. Crystal Barletta</div><div class="wtt-email"><a href="mailto:Crystal.Barletta@palmbeachschools.org">Crystal.Barletta@palmbeachschools.org</a></div></div></div>
+      <div class="wtt-card"><div class="wtt-dot"></div><div><div class="wtt-role">School Resource Officers</div><div class="wtt-name">Offcr Hennessey &amp; Offcr Vital</div><div class="wtt-email"><a href="mailto:Charles.Hennessey@palmbeachschools.org">Charles.Hennessey@palmbeachschools.org</a></div></div></div>
+      <div class="wtt-card"><div class="wtt-dot"></div><div><div class="wtt-role">AP, Curriculum</div><div class="wtt-name">Mr. John Rejc</div><div class="wtt-email"><a href="mailto:john.rejc@palmbeachschools.org">john.rejc@palmbeachschools.org</a></div></div></div>
+      <div class="wtt-card"><div class="wtt-dot"></div><div><div class="wtt-role">AP, Adult &amp; Community Ed</div><div class="wtt-name">Mr. Chris Romano</div><div class="wtt-email"><a href="mailto:chris.romano@palmbeachschools.org">chris.romano@palmbeachschools.org</a></div></div></div>
+    </div>
+  </section>
+
+  <!-- DEADLINES -->
+  <section class="section">
+    <div class="s-label">Key Dates</div>
+    <h2 class="s-title">WHS Important Dates &amp; Deadlines</h2>
+    <p class="s-sub">Stay ahead of important dates. Always verify with official school communications.</p>
+    <div class="dl-list">
+      <div class="dl-row"><div class="dl-date"><div class="dl-month">Jun</div><div class="dl-day">15</div></div><div class="dl-body"><h4>FAFSA Priority Filing — Many FL Colleges</h4><p>Submit early for maximum state and institutional aid</p></div><span class="dl-badge b-red">Urgent</span></div>
+      <div class="dl-row"><div class="dl-date"><div class="dl-month">Jul</div><div class="dl-day">1</div></div><div class="dl-body"><h4>Common App Opens for 2026–27 Seniors</h4><p>Create your account and begin essays over summer</p></div><span class="dl-badge b-amber">Coming Up</span></div>
+      <div class="dl-row"><div class="dl-date"><div class="dl-month">Oct</div><div class="dl-day">—</div></div><div class="dl-body"><h4>PSAT / NMSQT — 10th &amp; 11th Graders</h4><p>Administered at WHS — see Mrs. Pereira for details</p></div><span class="dl-badge b-blue">School-Wide</span></div>
+      <div class="dl-row"><div class="dl-date"><div class="dl-month">Nov</div><div class="dl-day">1</div></div><div class="dl-body"><h4>Early Decision / Early Action Deadlines</h4><p>Submit transcripts &amp; rec letters well before this date</p></div><span class="dl-badge b-green">Plan Ahead</span></div>
+      <div class="dl-row"><div class="dl-date"><div class="dl-month">Dec</div><div class="dl-day">1</div></div><div class="dl-body"><h4>Bright Futures Community Service Hours — Seniors</h4><p>Log all hours before this date. FAS: 100 hrs · FMS: 75 hrs</p></div><span class="dl-badge b-red">Important</span></div>
+      <div class="dl-row"><div class="dl-date"><div class="dl-month">Jan</div><div class="dl-day">1</div></div><div class="dl-body"><h4>Regular Decision Deadline — Most Colleges</h4><p>Confirm specific deadlines for each school on your list</p></div><span class="dl-badge b-green">Plan Ahead</span></div>
+      <div class="dl-row"><div class="dl-date"><div class="dl-month">May</div><div class="dl-day">1</div></div><div class="dl-body"><h4>National College Decision Day</h4><p>Submit enrollment deposit and notify other schools</p></div><span class="dl-badge b-blue">Seniors</span></div>
+    </div>
+  </section>
+
+  <!-- QUICK LINKS -->
+  <section class="section section-alt">
+    <div class="s-label">Quick Access</div>
+    <h2 class="s-title">WHS Forms &amp; Quick Links</h2>
+    <p class="s-sub">The most frequently needed forms, portals, and tools — one click away.</p>
+    <div class="ql-grid">
+      <a href="mailto:Lori.Gelobter@palmbeachschools.org" class="ql-item"><span class="ql-icon">📄</span> Transcript Request (Ms. Gelobter)</a>
+      <a href="#counselors" class="ql-item"><span class="ql-icon">📅</span> Book Counselor Appointment</a>
+      <a href="#" class="ql-item"><span class="ql-icon">✉️</span> Recommendation Letter Request</a>
+      <a href="https://www.pcsb.org" target="_blank" class="ql-item"><span class="ql-icon">🏫</span> PBCSD Student Portal</a>
+      <a href="https://www.commonapp.org" target="_blank" class="ql-item"><span class="ql-icon">🏛️</span> Common App</a>
+      <a href="https://studentaid.gov" target="_blank" class="ql-item"><span class="ql-icon">💵</span> FAFSA</a>
+      <a href="https://www.collegeboard.org" target="_blank" class="ql-item"><span class="ql-icon">📐</span> College Board (SAT/AP)</a>
+      <a href="https://www.act.org" target="_blank" class="ql-item"><span class="ql-icon">🧪</span> ACT Registration</a>
+      <a href="https://www.floridastudentfinancialaidsg.org/SAPHome/SAPHome?url=home" target="_blank" class="ql-item"><span class="ql-icon">🌴</span> Bright Futures Portal</a>
+      <a href="https://www.floridashines.org" target="_blank" class="ql-item"><span class="ql-icon">🎓</span> Florida Shines</a>
+      <a href="https://www.pcsb.org" target="_blank" class="ql-item"><span class="ql-icon">🖥️</span> PowerSchool Portal</a>
+      <a href="mailto:danielle.fairclough@palmbeachschools.org" class="ql-item"><span class="ql-icon">💙</span> Wolverine Wellness Center</a>
+    </div>
+  </section>
+
+</div><!-- /student-view -->
+
+<!-- PARENT VIEW -->
+<div id="parent-view" class="view">
+  <section class="section section-alt">
+    <div class="s-label">For WHS Families</div>
+    <h2 class="s-title">Supporting Your Wolverine's Journey</h2>
+    <p class="s-sub">From freshman orientation to college decision day — the WHS counseling team is a partner for your whole family.</p>
+    <div class="card-grid">
+      <div class="card" style="--card-accent:var(--teal);cursor:default;"><div class="card-icon ci-blue">📅</div><h3>College Planning Timeline</h3><p>Year-by-year guide for families from 9th grade through graduation.</p></div>
+      <div class="card" style="--card-accent:var(--gold);cursor:default;"><div class="card-icon ci-gold">💰</div><h3>Understanding Financial Aid</h3><p>FAFSA, Bright Futures, comparing award letters, and avoiding loan pitfalls.</p></div>
+      <div class="card" style="--card-accent:var(--teal);cursor:default;"><div class="card-icon ci-teal">🎤</div><h3>Parent Workshops &amp; Events</h3><p>FAFSA Night, Junior Planning Night, Senior Countdown, and Bright Futures sessions.</p></div>
+      <div class="card" style="--card-accent:#DC2626;cursor:default;"><div class="card-icon ci-red">💙</div><h3>Supporting Teen Wellness</h3><p>Warning signs, how to start conversations, connecting your student to Ms. Joseph or Ms. Ranieri.</p></div>
+      <div class="card" style="--card-accent:var(--purple);cursor:default;"><div class="card-icon ci-purple">📋</div><h3>Forms &amp; Permissions</h3><p>Transcript release, rec consent, scheduling changes, and testing fee waiver applications.</p></div>
+      <div class="card" style="--card-accent:var(--blue);cursor:default;"><div class="card-icon ci-navy">📞</div><h3>Schedule a Parent Conference</h3><p>Contact your student's counselor to schedule a conference at a convenient time.</p></div>
+    </div>
+  </section>
+  <section class="section">
+    <div class="s-label">Parent Quick Links</div>
+    <h2 class="s-title">Resources for WHS Families</h2>
+    <div class="ql-grid" style="margin-top:20px;">
+      <a href="#" class="ql-item"><span class="ql-icon">📅</span> Schedule Parent Conference</a>
+      <a href="https://studentaid.gov" target="_blank" class="ql-item"><span class="ql-icon">💵</span> FAFSA Filing Portal</a>
+      <a href="https://www.pcsb.org" target="_blank" class="ql-item"><span class="ql-icon">🏫</span> PowerSchool Parent Portal</a>
+      <a href="mailto:Lori.Gelobter@palmbeachschools.org" class="ql-item"><span class="ql-icon">📄</span> Transcript Request</a>
+      <a href="https://www.floridastudentfinancialaidsg.org/SAPHome/SAPHome?url=home" target="_blank" class="ql-item"><span class="ql-icon">🌴</span> Bright Futures for Parents</a>
+      <a href="mailto:Jenniferabreu311@gmail.com" class="ql-item"><span class="ql-icon">🤝</span> PTSA (Ms. Jennifer Abreu)</a>
+      <a href="mailto:Crystal.Barletta@palmbeachschools.org" class="ql-item"><span class="ql-icon">🏫</span> SAC Chair (Mrs. Barletta)</a>
+      <a href="mailto:danielle.fairclough@palmbeachschools.org" class="ql-item"><span class="ql-icon">💙</span> Wolverine Wellness Center</a>
+    </div>
+  </section>
+</div><!-- /parent-view -->
+
+<!-- APPT BAR -->
+<div class="appt-bar">
+  <div>
+    <h2>Book an Appointment with Your Counselor</h2>
+    <p>Counselor appointments are available for <strong>students only</strong> — Monday through Friday, 8:00 AM – 3:30 PM.<br>Parents wishing to speak with a counselor should contact the counseling office to schedule a conference.</p>
+    <div class="appt-note">🎒 Students: find your counselor's booking link in the Counselors section above</div>
+  </div>
+  <div style="display:flex;gap:10px;flex-wrap:wrap;">
+    <a href="mailto:danielle.fairclough@palmbeachschools.org" class="btn-p">📧 Contact Your Counselor</a>
+    <a href="https://www.pcsb.org" target="_blank" class="btn-g">🏫 PBCSD Portal</a>
+  </div>
+</div>
+
+<!-- CTA STRIP -->
+<div class="cta-strip">
+  <div><p>We're here to help you navigate with confidence.</p><span>Explore. Plan. Achieve.</span></div>
+  <a href="../resource-library/index.html" class="btn-w">Explore All Resources →</a>
+</div>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-top">
+    <div class="footer-logo-block"><div class="footer-logo-circle">🧭</div><div class="footer-logo-name">NXT STEP<br>— NAVIGATOR —</div><div class="footer-logo-tag">EDUCATE · EQUIP · EMPOWER</div></div>
+    <div class="footer-col"><h5>Explore</h5><a href="../counselor-compass/index.html">Counselor Compass</a><a href="index.html">WHS Counselor Compass</a><a href="../nextstep-how-to/index.html">NextStep How-To</a><a href="../nextstep-tours/index.html">NextStep Tours</a><a href="../resource-library/index.html">Resource Library</a></div>
+    <div class="footer-col"><h5>Quick Links</h5><a href="../about.html">About</a><a href="../contact.html">Contact</a><a href="../disclaimer.html">Disclaimer</a><a href="../privacy.html">Privacy Policy</a></div>
+    <div class="footer-col footer-connect"><h5>Let's Connect</h5><p>We're here to support you every step of the way.</p><a href="../contact.html" class="btn-cf">Contact Us →</a><div class="social-row"><div class="si">📘</div><div class="si">📸</div><div class="si">▶️</div><div class="si">🐦</div></div></div>
+    <div class="footer-notice"><div class="fn-icon">ℹ️</div><div class="fn-text"><p>Independent Resource Notice</p><span>NXT Step Navigator is an independent informational resource and is not affiliated with, endorsed by, or officially connected to Wellington High School or the School District.</span></div></div>
+  </div>
+  <div class="footer-divider"></div>
+  <div class="footer-bottom"><p>© 2026 NXT Step Navigator. All rights reserved.</p></div>
+</footer>
+
+<!-- CHAT -->
+<button id="chat-launcher" onclick="toggleChat()"><div class="c-badge" id="cbadge">1</div><svg id="ic-chat" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><svg id="ic-close" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" style="display:none;"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+<div id="chat-win">
+  <div class="cw-hdr"><div class="cw-av">🧭<div class="cw-dot"></div></div><div class="cw-ht"><strong>NXT Step Navigator</strong><span>WHS Counseling AI · Always available</span></div><button class="cw-hbtn" onclick="clearChat()">↺</button><button class="cw-hbtn" onclick="toggleChat()">✕</button></div>
+  <div class="cw-pills"><button class="cw-pill" onclick="st('Who is my counselor?')">👤 My Counselor</button><button class="cw-pill" onclick="st('Bright Futures requirements')">🌴 Bright Futures</button><button class="cw-pill" onclick="st('College application deadlines')">📅 Deadlines</button><button class="cw-pill" onclick="st('How do I get my transcript?')">📄 Transcripts</button><button class="cw-pill" onclick="st('Wellness Center support')">💙 Wellness</button></div>
+  <div id="cw-msgs"></div>
+  <div class="cw-inp-row"><textarea id="cw-inp" placeholder="Ask about counselors, college prep, deadlines..." rows="1" onkeydown="hk(event)" oninput="rsz(this)"></textarea><button id="cw-snd" onclick="sm()"><svg viewBox="0 0 24 24"><path d="M22 2L11 13M22 2L15 22 11 13 2 9l20-7z"/></svg></button></div>
+  <div class="cw-ft">NXT Step Navigator · WHS Counseling AI · Independent Resource</div>
+</div>
+
+<script>
+function switchView(v){['student','parent'].forEach(w=>{const el=document.getElementById(w+'-view');const tab=document.getElementById('tab-'+w);if(el)el.classList.toggle('active',w===v);if(tab)tab.classList.toggle('active',w===v);});}
+const SYS=`You are the NXT Step Navigator AI for Wellington Community High School (WHS), PBCSD SY 2026-27. Help students and parents warmly and concisely. Use bullets for lists.
+COUNSELORS: 9th Grade: Mr.Travis Gray(A-L) travis.gray@palmbeachschools.org Calendly:calendly.com/travis-gray-13/30min | Mr.Andrew Saperstein(M-Z) andrew.saperstein@palmbeachschools.org Calendly:calendly.com/andrew-saperstein/15min
+BIG BLUE 10-12 A-G: Mrs.Julia Saye(A-C) | Dr.Rosemyrtle Louis(D-G) | Admin:Ms.Kimberly Ellis 561-791-9323
+GREENVIEW 10-12 H-M: Mrs.Danielle Fairclough/Director(H-J) danielle.fairclough@palmbeachschools.org Calendly:calendly.com/danielle-fairclough/appointment | Mrs.Laquania Morgan(K-M) | Admin:Ms.Yvette Thomas 561-795-4920
+SOUTHSHORE 10-12 N-Z: Mr.Timothy Mickens(N-R) | Mrs.Terry Roberto(S-Z) Calendly:calendly.com/terry-roberto | Admin:Ms.Dalia Khalil 561-795-4915
+ESOL: Mrs.Claudia Gallardo | Wellness: Ms.Allyson Joseph | Ms.Christina Ranieri
+Transcripts:Ms.Lori Gelobter(5-7 days) | APPOINTMENTS FOR STUDENTS ONLY.
+BRIGHT FUTURES: FAS=3.5GPA+1290SAT/29ACT+100hrs | FMS=3.0GPA+1170SAT/26ACT+75hrs. Dec1 deadline.
+CRISIS: 988 | Text HOME to 741741 | Campus: Ms.Joseph or Ms.Ranieri
+DISCLAIMER: Independent resource, not official WHS/PBCSD. If crisis: give 988 immediately.`;
+let open=false,typ=false,hist=[];
+function toggleChat(){open=!open;document.getElementById('chat-win').classList.toggle('open',open);document.getElementById('ic-chat').style.display=open?'none':'block';document.getElementById('ic-close').style.display=open?'block':'none';if(open){document.getElementById('cbadge').style.display='none';setTimeout(()=>document.getElementById('cw-inp').focus(),300);}}
+function initChat(){document.getElementById('cw-msgs').innerHTML=`<div class="msg bot"><div class="m-av b-av">🧭</div><div><div class="m-bub"><strong>Hey Wolverine! 👋</strong><br><br>I'm your NXT Step Navigator assistant — ask me about your counselor, Bright Futures, college apps, deadlines, transcripts, and more!<div class="qrcs"><button class="qrc" onclick="st('Who is my counselor?')">Find my counselor</button><button class="qrc" onclick="st('Bright Futures requirements')">Bright Futures</button><button class="qrc" onclick="st('How do I get my transcript?')">Transcripts</button></div></div><div class="m-time">Just now</div></div></div>`;}
+async function sm(t){if(typ)return;const i=document.getElementById('cw-inp');const tx=(t||i.value).trim();if(!tx)return;i.value='';i.style.height='auto';am('user',tx);hist.push({role:'user',content:tx});showT();try{const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,system:SYS,messages:hist})});const d=await r.json();hideT();const rep=d.content?.[0]?.text||"I'm having trouble connecting. Please email danielle.fairclough@palmbeachschools.org.";hist.push({role:'assistant',content:rep});am('bot',rep);}catch(e){hideT();am('bot',"⚠️ Connection issue. Please contact danielle.fairclough@palmbeachschools.org.");}}
+function st(t){sm(t);}
+function am(role,text){const m=document.getElementById('cw-msgs');const iB=role==='bot';const time=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});let html=text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>').replace(/^- (.+)$/gm,'<li>$1</li>').replace(/(<li>[\s\S]*?<\/li>)/g,'<ul>$1</ul>').replace(/\n\n/g,'<br><br>').replace(/\n/g,'<br>');const d=document.createElement('div');d.className=`msg ${role}`;d.innerHTML=`<div class="m-av ${iB?'b-av':'u-av'}">${iB?'🧭':'ME'}</div><div><div class="m-bub">${html}</div><div class="m-time">${time}</div></div>`;m.appendChild(d);m.scrollTop=m.scrollHeight;}
+function showT(){typ=true;document.getElementById('cw-snd').disabled=true;const m=document.getElementById('cw-msgs');const d=document.createElement('div');d.className='msg bot';d.id='tmsg';d.innerHTML=`<div class="m-av b-av">🧭</div><div class="tdots"><div class="tdot"></div><div class="tdot"></div><div class="tdot"></div></div>`;m.appendChild(d);m.scrollTop=m.scrollHeight;}
+function hideT(){typ=false;document.getElementById('cw-snd').disabled=false;const e=document.getElementById('tmsg');if(e)e.remove();}
+function hk(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sm();}}
+function rsz(el){el.style.height='auto';el.style.height=Math.min(el.scrollHeight,84)+'px';}
+function clearChat(){hist=[];initChat();}
+initChat();
+</script>
+</body></html>
